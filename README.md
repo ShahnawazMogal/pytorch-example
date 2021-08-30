@@ -70,24 +70,16 @@ git clone https://github.com/ua-hlt-program/pytorch-example.git
 Next, we'll request an interactive job (tested on El Gato):
 
 ```bash
-qsub -I \
--N interactive-gpu \
--W group_list=mygroupnamehere \
--q standard \
--l select=1:ncpus=2:mem=16gb:ngpus=1 \
--l cput=3:0:0 \
--l walltime=1:0:0
+salloc --job-name=interactive --mem-per-cpu=4GB --nodes=1 --ntasks=1 --time=01:00:00 --account=clu-ling --partition=standard --gres=gpu:1
 ```
-
-_NOTE: If you're unfamiliar with `qsub` and the many options in the command above seem puzzling, you can find answers by checking out the manual via `man qsub` _
 
 If the cluster isn't too busy, you should soon see a new prompt formatted something like `[netid@gpu\d\d ~]`.  
 
 Now we'll run the singularity image we grabbed earlier.  Before that, though, let's ensure we're using the correct version of Singularity and that the correct CUDA version is available to Singularity:
 
 ```
-module load singularity/3.2.1
-module load cuda10/10.1
+module load cuda11-dnn/8.0.2
+module load cuda11/11.0
 ```
 
 Now we're finally ready to run the container:
